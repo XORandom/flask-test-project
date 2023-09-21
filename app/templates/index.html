@@ -1,22 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% if title == 'Home' %}
-        <title>{{ title }} - My home</title>
-    {% elif title == 'Work' %}
-        <title>{{ title }} - My work</title>
-    {% else %}
-        <title>home</title>
-    {% endif %}
-</head>
-<body>
-    <h1>Привет, {{ user.username}}!</h1>
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Привет, {{ user.username }}!</h1>
     {% for post in posts %}
-        {% if post.sex == 'Male' %}
-            <div><p>{{post.author.username}} написал: <b>{{post.body}}</b> </p></div>
+        {% if post.gender == 'M' %}
+            <div><p>{{post.author.username}} написал: <b>{{post.body}}</b></p></div>
         {% else %}
-            <div><p>{{post.author.username}} написала: <b>{{post.body}}</b> </p></div>
+            <div><p>{{post.author.username}} написала: <b>{{post.body}}</b></p></div>
         {% endif %}
     {% endfor %}
-</body>
-</html>
+{% endblock %}

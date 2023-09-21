@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% if title %}
+    <title>
+        {{ title }} - Моя соц сеть
+    </title>
+    {% else %}
+    <title> Моя соц сеть </title>
+    {% endif %}
+</head>
+<body>
+<div>Моя соц сеть:
+    <a href="{{url_for('index')}}">Домашняя страница </a>
+    <a href="/login">Вход </a>
+</div>
+    <hr>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li> {{ message }} </li>
+                    {% endfor %}
+                </ul>
+
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+</body>
+</html>
