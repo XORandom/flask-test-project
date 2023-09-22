@@ -1,33 +1,25 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends "base.html" %}
 
-  <h1>Вход</h1>
-    <form action="" method="post" novalidate>
-      {{ form.hidden_tag() }} <!--Применяется секретный ключ-->
+{% block content %}
+    <h1>Вход</h1>
+    <form action="" method="post"  novalidate>
+        {{ form.hidden_tag() }}
         <p>
-          {{ form.username.label }} <br>
-          {{ form.username(size=32) }} <br>
-          {% for error in form.username.errors %}
-            <span style="color: red;"> <!--Тег для вывода строки-->
-              [{{ 'Поле логин обязательно для заполнения!' }}]
-            </span>
-          {% endfor %}
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>
-          {{ form.password.label }}<br>
-          {{ form.password(size=32) }}<br>
-          {% for error in form.username.errors %}
-            <span style="color: red;"> <!--Тег для вывода строки-->
-              [{{ 'Без пароля нельзя!' }}]
-            </span>
-          {% endfor %}
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
-        <p>
-          {{ form.remember_me.label() }} {{ form.remember_me }}
-        </p>
-        <p>
-          {{ form.submit }}
-        </p>
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.submit() }}</p>
     </form>
- <p> Новый пользователь? <a href="{{ url_for('register') }}"> Нажмите для регистрации </a> </p>
-{% endblock %}
+    <p>Новый пользователь? <a href="{{ url_for('register') }}">Нажмите для регистрации!</a></p>
+ {% endblock %}

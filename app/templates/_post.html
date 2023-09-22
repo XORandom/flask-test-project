@@ -1,15 +1,15 @@
-{% if user.sex=='M'%}
+{% if user.gender=='M'%}
     <table>
         <tr valign="top">
             <td><img src="{{ post.author.avatar(36) }}"></td>
             <td>{{ post.author.username }} написал:<br>{{ post.body }}</td>
         </tr>
     </table>
-{% else %}
+    {% else %}
     <table>
         <tr valign="top">
             <td><img src="{{ post.author.avatar(36) }}"></td>
             <td>{{ post.author.username }} написала:<br>{{ post.body }}</td>
         </tr>
     </table>
-{% endif %}
+    {% endif %}

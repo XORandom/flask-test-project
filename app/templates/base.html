@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     {% if title %}
-    <title>
-        {{ title }} - Моя соц сеть
-    </title>
+    <title>{{ title }} - Мой блог</title>
     {% else %}
-    <title> Моя соц сеть </title>
+    <title>Добро пожаловать в мой блог!</title>
     {% endif %}
 </head>
 <body>
-<div>Моя соц сеть:
-    <a href="{{url_for('index')}}">Домашняя страница </a>
-    {% if current_user.is_anonymous %} <!--Если пользователь анонимный-->
-        <a href="{{ url_for('login') }}">Вход </a>
-    {% else %}
-        <a href="{{ url_for('user', username=current_user.username) }}">Профиль пользователя</a>
-        <a href="{{ url_for('logout') }}">Выйти </a>
-    {% endif %}
-</div>
-    <hr>
+ <div>Мой блог:
+     <a href="{{ url_for('index') }}">Домой</a>
+     {% if current_user.is_anonymous %}
+     <a href={{url_for('login')}}>Вход</a>
+
+     {% else %}
+     <a href="{{ url_for('user', username=current_user.username) }}">Профиль пользователя</a>
+     <a href="{{url_for('logout')}}">Выйти</a>
+     {% endif %}
+ </div>
+        <hr>
         {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li> {{ message }} </li>
-                    {% endfor %}
-                </ul>
-
-            {% endif %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% endwith %}
-
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
 </body>
 </html>
