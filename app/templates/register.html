@@ -12,6 +12,11 @@
             {% endfor %}
         </p>
         <p>
+            {{form.sex.label}} {{form.sex.select}}<br>
+            {{form.sex(size=1)}}<br>
+        </p>
+
+        <p>
             {{ form.email.label }}<br>
             {{ form.email(size=64) }}<br>
             {% for error in form.email.errors %}

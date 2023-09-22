@@ -2,10 +2,10 @@
 {% block content %}
     <h1>Привет, {{ current_user.username }}!</h1>
     {% for post in posts %}
-        {% if post.sex == 'Male' %}
-            <div><p>{{post.author.username}} написал: <b>{{post.body}}</b></p></div>
+        {% if post["sex"] == "M" %}
+            <div><p>{{ post.author.username }} написал: <b>{{ post.body }}</b></p></div>
         {% else %}
-            <div><p>{{post.author.username}} написала: <b>{{post.body}}</b></p></div>
+            <div><p>{{ post.author.username }} написала: <b>{{ post.body }}</b></p></div>
         {% endif %}
     {% endfor %}
 {% endblock %}

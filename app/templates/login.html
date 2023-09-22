@@ -9,7 +9,7 @@
           {{ form.username(size=32) }} <br>
           {% for error in form.username.errors %}
             <span style="color: red;"> <!--Тег для вывода строки-->
-              {{ 'Поле логин обязательно для заполнения!' }}
+              [{{ 'Поле логин обязательно для заполнения!' }}]
             </span>
           {% endfor %}
         </p>
@@ -18,7 +18,7 @@
           {{ form.password(size=32) }}<br>
           {% for error in form.username.errors %}
             <span style="color: red;"> <!--Тег для вывода строки-->
-              {{ 'Без пароля нельзя!' }}
+              [{{ 'Без пароля нельзя!' }}]
             </span>
           {% endfor %}
         </p>
