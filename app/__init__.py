@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, current_app
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -19,6 +19,7 @@ login = LoginManager(app)
 """Отвечает за логины"""
 login.login_view = 'login'
 """"""
+login.login_message = 'Для просмотра необходима авторизация'
 
 from app import routes, models
 
