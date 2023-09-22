@@ -12,7 +12,6 @@ from datetime import datetime
 @app.route('/index')
 @login_required
 def index():
-    user = {'username': 'XORandom'}
     posts = [
         {
             'author': {'username': 'Наташа'},
@@ -41,12 +40,9 @@ def login():
             return redirect(url_for('login'))
         login_user(user=user, remember=form.remember_me.data)
         next_page = request.args.get('next')
-        # if not next_page or urlparse(next_page).netloc != '':
-        #     return redirect(url_for('index'))
         if not next_page or urlparse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
-        # return redirect(url_for('index'))
     return render_template('login.html', title='Вход', form=form)
 
 
@@ -63,7 +59,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         # user = User(username=form.username.data, email=form.email.data)
-        user = User()
+        user = User(gender=form.sex.data)
         user.set_username(form.username.data)
         user.set_email(form.email.data)
         user.set_password(form.password.data)
