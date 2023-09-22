@@ -12,7 +12,11 @@
 <body>
 <div>Моя соц сеть:
     <a href="{{url_for('index')}}">Домашняя страница </a>
-    <a href="{{url_for('login')}}">Вход </a>
+    {% if current_user.is_anonymous %} <!--Если пользователь анонимный-->
+        <a href="{{ url_for('login') }}">Вход </a>
+    {% else %}
+        <a href="{{ url_for('logout') }}">Выход </a>
+    {% endif %}
 </div>
     <hr>
         {% with messages = get_flashed_messages() %}
