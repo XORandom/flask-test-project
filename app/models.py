@@ -1,31 +1,23 @@
+from app import db, login
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
-from werkzeug.security import generate_password_hash, check_password_hash
-
-from app import db, login
 
 
 @login.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
+def load_user(id):
+    return User.query.get(int(id))
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(128), index=True, unique=True)
+    email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    sex = db.Column(db.String(1))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')  # lazy='dynamic'
+    gender = db.Column(db.String(1))
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def set_username(self, username):
-        self.username = username
-
-    def set_email(self, email):
-        self.email = email
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -49,4 +41,3 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
-
