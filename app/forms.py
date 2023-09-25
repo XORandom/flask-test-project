@@ -2,7 +2,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from app.models import User
-#from email_validator import validate_email
+
+
+# from email_validator import validate_email
 
 
 class LoginForm(FlaskForm):
@@ -53,3 +55,13 @@ class EditProfileForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
     about_me = TextAreaField('Обо мне', validators=[Length(min=0, max=140)])
     submit = SubmitField('Принять')
+
+    def __init__(self, self_name, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.self_name = self_name
+
+    def validate_username(self, username):
+        if username.data != self.self_name:
+            user = User.query.filter_by(username=self.username.data).first()
+            if user is not None:
+                raise ValidationError('Имя занято, используйте другое!')
