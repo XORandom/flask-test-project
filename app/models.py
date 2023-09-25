@@ -24,6 +24,9 @@ class User(db.Model, UserMixin):
     def set_username(self, username):
         self.username = username
 
+    def set_gender(self, gender):
+        self.gender = gender
+
     def set_email(self, email):
         self.email = email
 
