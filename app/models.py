@@ -10,8 +10,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 
 followers = db.Table('followers',
-                     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-                     db.Column('following_id', db.Integer, db.ForeignKey('user.id')))
+                     db.Column('follower_id', db.Integer, db.ForeignKey('user_id')),
+                     db.Column('following_id', db.Integer, db.ForeignKey('user_id')))
 """Создаем таблицу подписчиков, в ней будут данные из юзера"""
 
 
