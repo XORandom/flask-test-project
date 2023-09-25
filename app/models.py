@@ -72,8 +72,26 @@ class User(db.Model, UserMixin):
             self.following.append(user)
 
     def unfollow(self, user):
+        """
+
+        :param user:
+        :return:
+        """
         if self.is_following(user):
             self.following.remove(user)
+
+    def followed_posts(self):
+        """
+        Отображение собственных постов и тех, на которые ты подписан. id подписки = посту.
+        :return:
+        """
+        following = Post.query.join(
+            followers, (followers.c.following_is == Post.user_id)).filter(
+            followers.c.following_is == self.id)
+        """Все посты наших подписок"""
+        my_posts = Post.query.filter_by(user_id=self.id)
+        """Выбираем свои посты"""
+        return following.union(my_posts).order_by(Post.timestamp.deck())  # Объединяем и сортируем по времени
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
