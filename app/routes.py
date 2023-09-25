@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required, login_manager
-from app.forms import LoginForm, RegistrationForm, EditProfileForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm
 from app.models import User
 # from werkzeug.urls import url_parse
 from urllib.parse import urlparse
@@ -24,7 +24,6 @@ def index():
             'body': 'Да пора уже'
         }
     ]
-
     return render_template('index.html', title='Флудилка', posts=posts)
 
 
@@ -96,7 +95,8 @@ def user(username):
         {'author': user_, 'body': "Пора домой!!!"},
         {'author': user_, 'body': "Скорее уже!!!"}
     ]
-    return render_template('user.html', user=user_, posts=posts)
+    form = EmptyForm()
+    return render_template('user.html', user=user_, posts=posts, form=form)
 
 
 @app.before_request
@@ -104,3 +104,43 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.now()
         db.session.commit()
+
+
+@app.route('/follow/<username>', methods=['POST'])
+@login_required
+def follow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            flash(f'Пользователь {username} не найден')
+            return redirect(url_for('index'))
+        if user == current_user:
+            flash(f'Нельзя подписаться на самого себя')
+            return redirect(url_for('user', username=username))
+        current_user.follow(user)
+        db.session.commit()  # Добавляем связь в БД
+        flash(f'Вы подписались на {username}')
+        return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/unfollow/<username>', methods=['POST'])
+@login_required
+def unfollow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first()
+        # if user is None:
+        #     flash(f'Пользователь {username} не найден')
+        #     return redirect(url_for('index'))
+        # if user == current_user:
+        #     flash(f'Нельзя отписаться от самого себя')
+        #     return redirect(url_for('user', username=username))
+        current_user.unfollow(user)
+        db.session.commit()  # Добавляем связь в БД
+        flash(f'Вы отписались от {username}')
+        return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))

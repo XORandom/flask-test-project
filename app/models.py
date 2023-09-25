@@ -61,7 +61,7 @@ class User(db.Model, UserMixin):
 
         :return True, если подписан, False, если нет:
         """
-        return self.following.filter(followers.c.following_id == user.id).count > 0
+        return self.following.filter(followers.c.following_id == user.id).count() > 0
 
     def follow(self, user):
         """
