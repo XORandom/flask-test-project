@@ -1,6 +1,11 @@
 # flask-test-project
 
-
+Создание базы данных
+```cmd
+flask db init 
+flask db migrate -m 'user and post'
+flask db upgrade
+```
 Удаление пользователя из БД
 ```cmd
 flask shell
