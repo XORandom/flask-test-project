@@ -15,12 +15,12 @@ def index():
     posts = [
         {
             'author': {'username': 'Наташа'},
-            'sex': 'F',
+            'gender': 'F',
             'body': 'Хочется домой...'
         },
         {
             'author': {'username': 'Андрей'},
-            'sex': 'M',
+            'gender': 'M',
             'body': 'Да пора уже'
         }
     ]
@@ -36,7 +36,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Неправильное имя пользователя или пароль')
+            flash('Неправильное имя пользователя или пароль ')
             return redirect(url_for('login'))
         login_user(user=user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -59,7 +59,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         # user = User(username=form.username.data, email=form.email.data)
-        user = User(gender=form.sex.data)
+        user = User(gender=form.gender.data)
         user.set_username(form.username.data)
         user.set_email(form.email.data)
         user.set_password(form.password.data)
@@ -90,7 +90,7 @@ def edit_profile():
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    user = User.query.filter_by(username=username).first_or_484()
+    user = User.query.filter_by(username=username).first_or_404()
     posts = [
         {'author': user, 'body': "Пора домой!!!"},
         {'author': user, 'body': "Скорее уже!!!"}

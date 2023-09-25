@@ -15,13 +15,12 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    sex = SelectField('Пол', coerce=str, choices=[('M', 'М'), ('F', 'Ж')])
+    gender = SelectField('Пол', coerce=str, choices=[('M', 'М'), ('F', 'Ж')])
     password = PasswordField('Пароль', validators=[DataRequired()])
     password2 = PasswordField('Повторите пароль',
                               validators=[DataRequired(),
                                           EqualTo('password', message='Пароли не совпадают')])
     submit = SubmitField('Регистрация')
-
 
     def validate_username(self, username):
         """
@@ -33,7 +32,6 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Имя пользователя занято!')
-
 
     def validate_email(self, email):
         """

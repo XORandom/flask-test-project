@@ -21,6 +21,6 @@ login.login_view = 'login'
 """"""
 login.login_message = 'Для просмотра необходима авторизация'
 
-from app import routes, models
+from app import routes, models, errors
 
 

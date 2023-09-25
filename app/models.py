@@ -14,9 +14,9 @@ def load_user(user_id):
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(128), index=True, unique=True)
+    email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    sex = db.Column(db.String(1))
+    gender = db.Column(db.String(1))
     posts = db.relationship('Post', backref='author', lazy='dynamic')  # lazy='dynamic'
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
