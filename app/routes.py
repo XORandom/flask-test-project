@@ -1,3 +1,4 @@
+import config
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required, login_manager
@@ -19,7 +20,20 @@ def index():
         db.session.commit()
         flash('Ваш пост опубликован')
         return redirect(url_for('index'))
-    posts = current_user.followed_posts().all()
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.followed_posts().paginate(page=page,
+                                                   per_page=config.Config.POSTS_ON_PAGE, error_out=False)
+    # posts = current_user.followed_posts().paginate(page, app.config['POSTS_ON_PAGE'], error_out=False)  # Тоже самое
+    if posts.has_next:
+        next_page_url = url_for('index', page=posts.next_num)
+    else:
+        next_page_url = None
+
+    if posts.has_prev:
+        prev_page_url = url_for('index', page=posts.prev_num)
+    else:
+        prev_page_url = None
+
     # posts = [
     #     {
     #         'author': {'username': 'Наташа'},
@@ -32,14 +46,28 @@ def index():
     #         'body': 'Да пора уже'
     #     }
     # ]
-    return render_template('index.html', title='Домашняя страница', posts=posts, form=form, user=current_user)
+    return render_template('index.html', title='Домашняя страница', posts=posts, form=form, user=current_user,
+                           next_url=next_page_url, prev_url=prev_page_url)
 
 
 @app.route('/news')
 @login_required
 def news():
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html', title='Новости', posts=posts, user=current_user)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(page=page,
+                                                                per_page=config.Config.POSTS_ON_PAGE, error_out=False)
+    if posts.has_next:
+        next_page_url = url_for('news', page=posts.next_num)
+    else:
+        next_page_url = None
+
+    if posts.has_prev:
+        prev_page_url = url_for('news', page=posts.prev_num)
+    else:
+        prev_page_url = None
+    return render_template('index.html', title='Новости', posts=posts, user=current_user,
+                           next_url=next_page_url, prev_url=prev_page_url)
+    # Тот же индекс, но без порождениия формы для ввода
 
 
 @app.route('/login', methods=['GET', 'POST'])
