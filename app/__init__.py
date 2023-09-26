@@ -4,6 +4,7 @@ from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_mail import Mail
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 
@@ -24,6 +25,7 @@ login.login_view = 'login'
 """Ищет маршрут login, будет подставлять имя пользователя в строку браузера"""
 login.login_message = 'Для просмотра необходима авторизация'
 """замена английского сообщения на русское"""
+mail = Mail(app)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:

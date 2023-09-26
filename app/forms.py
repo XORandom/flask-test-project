@@ -75,3 +75,14 @@ class PostForm(FlaskForm):
     post_tx = TextAreaField('Написать', validators=[DataRequired()])
     """содержит блок текста"""
     submit = SubmitField('Отправить')
+
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Отправить')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Введите новый пароль', validators=[DataRequired()])
+    password2 = PasswordField('Повторите пароль', validators=[DataRequired(), EqualTo(password)])
+    submit = SubmitField('Подтвердить')
