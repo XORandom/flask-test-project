@@ -32,14 +32,14 @@ def index():
     #         'body': 'Да пора уже'
     #     }
     # ]
-    return render_template('index.html', title='Домашняя страница', posts=posts, form=form)
+    return render_template('index.html', title='Домашняя страница', posts=posts, form=form, user=current_user)
 
 
 @app.route('/news')
 @login_required
 def news():
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html', title='Новости', posts=posts)
+    return render_template('index.html', title='Новости', posts=posts, user=current_user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
