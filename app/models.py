@@ -86,18 +86,21 @@ class User(db.Model, UserMixin):
         :return:
         """
         following = Post.query.join(
-            followers, (followers.c.following_is == Post.user_id)).filter(
-            followers.c.following_is == self.id)
+            followers, (followers.c.following_id == Post.user_id)).filter(
+            followers.c.follower_id == self.id)
         """Все посты наших подписок"""
         my_posts = Post.query.filter_by(user_id=self.id)
         """Выбираем свои посты"""
-        return following.union(my_posts).order_by(Post.timestamp.deck())  # Объединяем и сортируем по времени
+        return following.union(my_posts).order_by(Post.timestamp.desc())  # Объединяем и сортируем по времени
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
 
 class Post(db.Model):
+    """
+    Посты в соцсети
+    """
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

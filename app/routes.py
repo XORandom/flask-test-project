@@ -1,30 +1,45 @@
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required, login_manager
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm
-from app.models import User
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm
+from app.models import User, Post
 # from werkzeug.urls import url_parse
 from urllib.parse import urlparse
 from datetime import datetime
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    posts = [
-        {
-            'author': {'username': 'Наташа'},
-            'gender': 'F',
-            'body': 'Хочется домой...'
-        },
-        {
-            'author': {'username': 'Андрей'},
-            'gender': 'M',
-            'body': 'Да пора уже'
-        }
-    ]
-    return render_template('index.html', title='Флудилка', posts=posts)
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post_tx.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Ваш пост опубликован')
+        return redirect(url_for('index'))
+    posts = current_user.followed_posts().all()
+    # posts = [
+    #     {
+    #         'author': {'username': 'Наташа'},
+    #         'gender': 'F',
+    #         'body': 'Хочется домой...'
+    #     },
+    #     {
+    #         'author': {'username': 'Андрей'},
+    #         'gender': 'M',
+    #         'body': 'Да пора уже'
+    #     }
+    # ]
+    return render_template('index.html', title='Домашняя страница', posts=posts, form=form)
+
+
+@app.route('/news')
+@login_required
+def news():
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', title='Новости', posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])

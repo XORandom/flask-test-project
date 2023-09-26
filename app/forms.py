@@ -70,3 +70,8 @@ class EditProfileForm(FlaskForm):
 class EmptyForm(FlaskForm):
     submit = SubmitField('Подписаться')
 
+
+class PostForm(FlaskForm):
+    post_tx = TextAreaField('Написать', validators=[DataRequired()])
+    """содержит блок текста"""
+    submit = SubmitField('Отправить')
