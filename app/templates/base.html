@@ -12,8 +12,8 @@
 </head>
 <body>
 <div>Моя соц сеть:
-    <a href="{{url_for('index')}}">Домашняя страница </a>
-    <a href="{{url_for('news')}}">Новости </a>
+    <a href="{{ url_for('index') }}">Домашняя страница </a>
+    <a href="{{ url_for('news') }}">Новости </a>
     {% if current_user.is_anonymous %} <!--Если пользователь анонимный-->
         <a href="{{ url_for('login') }}">Вход </a>
     {% else %}
