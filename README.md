@@ -1,12 +1,12 @@
 # flask-test-project
 
-Создание базы данных
+# Создание базы данных
 ```cmd
 flask db init 
 flask db migrate -m 'user and post'
 flask db upgrade
 ```
-Удаление пользователя из БД
+# Удаление пользователя из БД
 ```cmd
 flask shell
 >>> user = User.query.get(1)
@@ -16,4 +16,13 @@ flask shell
 
 flask db migrate -m 'new columns in user'
 flask db upgrade
+```
+
+# Для работы с почтой
+```
+pip install flask_mail
+```
+# Генерация ключа восстановления пароля
+```
+pip install pyjwt 
 ```
