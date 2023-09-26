@@ -13,3 +13,6 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['your_email@mail.ru']
+    POSTS_ON_PAGE = 3
+    """Количество постов на странице"""
+    SECURITY_EMAIL_SENDER = 'valid_email@my_domain.com'
