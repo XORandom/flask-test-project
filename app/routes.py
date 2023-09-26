@@ -134,12 +134,27 @@ def edit_profile():
 @login_required
 def user(username):
     user_ = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user_, 'body': "Пора домой!!!"},
-        {'author': user_, 'body': "Скорее уже!!!"}
-    ]
     form = EmptyForm()
-    return render_template('user.html', user=user_, posts=posts, form=form)
+    page = request.args.get('page', 1, type=int)
+    posts = user_.posts.order_by(Post.timestamp.desc()).paginate(page=page,
+                                                                 per_page=config.Config.POSTS_ON_PAGE,
+                                                                 error_out=False)
+    # posts = [
+    #     {'author': user_, 'body': "Пора домой!!!"},
+    #     {'author': user_, 'body': "Скорее уже!!!"}
+    # ]
+    if posts.has_next:
+        next_page_url = url_for('user', page=posts.next_num, username=user_.username)
+    else:
+        next_page_url = None
+
+    if posts.has_prev:
+        prev_page_url = url_for('user', page=posts.prev_num, username=user_.username)
+    else:
+        prev_page_url = None
+
+    return render_template('user.html', user=user_, posts=posts, form=form,
+                           next_url=next_page_url, prev_url=prev_page_url)
 
 
 @app.before_request
