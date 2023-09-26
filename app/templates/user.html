@@ -33,5 +33,11 @@
     {% for post in posts %}
         {% include '_post.html' %}
     {% endfor %}
+    {% if next_url %}
+        <a href="{{ next_url }}">Старые посты</a>
+    {% endif %}
+    {% if prev_url %}
+        <a href="{{ prev_url }}">Новые посты</a>
+    {% endif %}
 </p>
 {% endblock %}
