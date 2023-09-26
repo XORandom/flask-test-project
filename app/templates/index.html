@@ -15,11 +15,7 @@
             <p>{{ form.submit() }}</p>
         </form>
     {% endif %}
-<!--    {% for post in posts %}-->
-<!--        {% if post["gender"] == "M" %}-->
-<!--            <div><p>{{ post.author.username }} написал: <b>{{ post.body }}</b></p></div>-->
-<!--        {% else %}-->
-<!--            <div><p>{{ post.author.username }} написала: <b>{{ post.body }}</b></p></div>-->
-<!--        {% endif %}-->
-<!--    {% endfor %}-->
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
 {% endblock %}
