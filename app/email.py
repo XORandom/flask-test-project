@@ -10,6 +10,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     # sender = отправитель, recipients = получатели
     msg.body = text_body
+    print(msg.body)
     msg.html = html_body
     # msg = Message("Feedback", recipients=[app.config['MAIL_USERNAME']])
     #
